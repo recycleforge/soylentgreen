@@ -20,7 +20,7 @@ def get_city_from_address(address):
 
         components = data["results"][0]["address_components"]
 
-        # 🔍 Attempt to find the city
+        # Find city
         city_component = next(
             (comp for comp in components if "administrative_area_level_1" in comp["types"]),
             None
