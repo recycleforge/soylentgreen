@@ -1,0 +1,51 @@
+{
+  "standard": "ANSI/NISO Z39.19-2005",
+  "controlled_vocabulary": {
+    "concept": "calendar_day",
+    "notation_scheme": "ISO-8601-derived month-day range encoding",
+    "description": "A controlled vocabulary representing every day of a Gregorian calendar year using month-day ranges, with explicit leap year variation.",
+    "structure": {
+      "common_year": {
+        "calendar_type": "gregorian_common",
+        "days": [
+          { "month": "01", "range": { "start": 1, "end": 31 } },
+          { "month": "02", "range": { "start": 1, "end": 28 } },
+          { "month": "03", "range": { "start": 1, "end": 31 } },
+          { "month": "04", "range": { "start": 1, "end": 30 } },
+          { "month": "05", "range": { "start": 1, "end": 31 } },
+          { "month": "06", "range": { "start": 1, "end": 30 } },
+          { "month": "07", "range": { "start": 1, "end": 31 } },
+          { "month": "08", "range": { "start": 1, "end": 31 } },
+          { "month": "09", "range": { "start": 1, "end": 30 } },
+          { "month": "10", "range": { "start": 1, "end": 31 } },
+          { "month": "11", "range": { "start": 1, "end": 30 } },
+          { "month": "12", "range": { "start": 1, "end": 31 } }
+        ]
+      },
+      "leap_year": {
+        "calendar_type": "gregorian_leap",
+        "leap_rule": "divisible_by_4_and_not_100_unless_divisible_by_400",
+        "days": [
+          { "month": "01", "range": { "start": 1, "end": 31 } },
+          { "month": "02", "range": { "start": 1, "end": 29 } },
+          { "month": "03", "range": { "start": 1, "end": 31 } },
+          { "month": "04", "range": { "start": 1, "end": 30 } },
+          { "month": "05", "range": { "start": 1, "end": 31 } },
+          { "month": "06", "range": { "start": 1, "end": 30 } },
+          { "month": "07", "range": { "start": 1, "end": 31 } },
+          { "month": "08", "range": { "start": 1, "end": 31 } },
+          { "month": "09", "range": { "start": 1, "end": 30 } },
+          { "month": "10", "range": { "start": 1, "end": 31 } },
+          { "month": "11", "range": { "start": 1, "end": 30 } },
+          { "month": "12", "range": { "start": 1, "end": 31 } }
+        ]
+      }
+    },
+    "indexing_notes": {
+      "tokenization": "MM-DD derived from month/day ranges",
+      "hierarchy": "month > day",
+      "normalization": "zero-padded month values, integer day ranges",
+      "use_case": "faceted retrieval, calendar-based classification, temporal indexing"
+    }
+  }
+}
