@@ -1,20 +1,19 @@
 import { applyVars } from '../utils/rendering';
 
-type Params = Record<string, any>;
+type P = Record<string, any>;
 
-const escapeHtml = (v: any = '') =>
-  String(v)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+const _e = (x: any = '') =>
+  ('' + x)
+    .split('&').join('&amp;')
+    .split('<').join('&lt;')
+    .split('>').join('&gt;')
+    .split('"').join('&quot;')
+    .split("'").join('&#39;');
 
-const formatText = (v: any = '') =>
-  escapeHtml(v).replace(/\t/g, '<br />');
+const _f = (x: any = '') => _e(x).replace(/\t/g, '<br />');
 
-export const sanitizeLabelHtml = (html = '') =>
-  String(html)
+export const sanitizeLabelHtml = (h = '') =>
+  String(h)
     .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
     .replace(/<iframe[\s\S]*?>[\s\S]*?<\/iframe>/gi, '')
     .replace(/<(object|embed|form)[\s\S]*?>[\s\S]*?<\/\1>/gi, '')
@@ -22,49 +21,34 @@ export const sanitizeLabelHtml = (html = '') =>
     .replace(/javascript:/gi, '')
     .trim();
 
-const TEMPLATES = [
+const _t = [
   {
     id: 'simple',
     fields: ['title', 'subtitle'],
-    html: (p: Params) => `
-      <div class="label">
-        <div class="title">${p.title || ''}</div>
-        <div class="subtitle">${p.subtitle || ''}</div>
-      </div>`
+    html: (p: P) =>
+      `<div class="label"><div class="title">${p.title || ''}</div><div class="subtitle">${p.subtitle || ''}</div></div>`
   },
   {
     id: 'price',
     fields: ['product', 'price'],
-    html: (p: Params) => `
-      <div class="label">
-        <div>${p.product || ''}</div>
-        <div>$${p.price || ''}</div>
-      </div>`
+    html: (p: P) =>
+      `<div class="label"><div>${p.product || ''}</div><div>$${p.price || ''}</div></div>`
   }
 ];
 
-const getTemplate = (id: string) =>
-  TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
+const _g = (i: string) => _t.find(t => t.id === i) ?? _t[0];
 
-const resolveParams = (tpl: any, item: Params = {}, record: Params = {}) => {
-  const out: Params = {};
+const _r = (t: any, a: P = {}, b: P = {}) =>
+  ((o: P = {}) => (
+    t.fields.forEach((k: string) => {
+      const v = a?.[k] ?? '';
+      o[k] = _f(applyVars(v, b));
+    }),
+    o
+  ))();
 
-  tpl.fields.forEach((k: string) => {
-    const raw = item[k] ?? '';
-    const val = applyVars(raw, record);
-    out[k] = formatText(val);
-  });
-
-  return out;
-};
-
-export const buildLabelTemplateMarkup = (
-  item: Params = {},
-  record: Params = {}
-) => {
-  const tpl = getTemplate(item.template_id || 'simple');
-  const params = resolveParams(tpl, item, record);
-
-  const html = tpl.html(params);
-  return sanitizeLabelHtml(html);
+export const buildLabelTemplateMarkup = (i: P = {}, r: P = {}) => {
+  const t = _g(i?.template_id || 'simple');
+  const p = _r(t, i, r);
+  return sanitizeLabelHtml(t.html(p));
 };
