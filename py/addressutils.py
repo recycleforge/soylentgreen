@@ -1,7 +1,6 @@
-# address_utils.py
-# NOTE: Replace with your real API key
 import requests
 
+# NOTE: Replace with your real API key
 API_KEY = "YOUR_API_KEY_HERE"
 
 def get_city_from_address(address):
